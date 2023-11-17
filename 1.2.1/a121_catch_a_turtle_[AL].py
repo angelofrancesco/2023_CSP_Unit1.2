@@ -13,9 +13,10 @@ spot.shapesize(5)
 spot.fillcolor("pink")
 
 #-----initialize turtle-----
-spot.onclick(fun=
+def spot_onclick():
 
 
+spot.onclick("circle")
 
 #-----game functions--------
 def spot_clicked(x, y):
