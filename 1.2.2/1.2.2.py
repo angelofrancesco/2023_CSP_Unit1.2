@@ -1,111 +1,128 @@
-# -----import statements-----
-import turtle as trtl
-import random as rand
-import leaderboard as lb
+# leaderboard.py
+# The leaderboard module to be used in Activity 1.2.2
 
-# -----game configuration-----
-# To view in trinket change the values of font_size, spot_size, and
-# screen_size by half
-colors = ["black", "sky blue", "salmon", "orchid", "pale green"]
-font_setup = ("Arial", 20, "normal")
-spot_size = 2
-spot_color = 'pink'
-spot_shape = "turtle"
-timer = 30
-counter_interval = 1000
-timer_up = False
-score = 0
-
-# -----initialize the turtles-----
-spot = trtl.Turtle()
-spot.shape(spot_shape)
-spot.shapesize(spot_size)
-spot.fillcolor(spot_color)
-
-score_writer = trtl.Turtle()
-score_writer.hideturtle()
-score_writer.penup()
-score_writer.goto(160, 160)  # x,y set to fit on smaller screen
-score_writer.pendown()
-# score_writer.showturtle()
-
-counter = trtl.Turtle()
-counter.hideturtle()
-counter.penup()
-counter.goto(-160, 160)  # x,y set to fit on smaller screen
-counter.pendown()
+# set the levels of scoring
+bronze_score = 15
+silver_score = 20
+gold_score = 25
 
 
-# counter.showturtle()
+# return names in the leaderboard file
+def get_names(file_name):
+    leaderboard_file = open(file_name, "r")  # be sure you have created this
 
-# -----game functions-----
+    # use a for loop to iterate through the content of the file, one line at a time
+    # note that each line in the file has the format "leader_name,leader_score" for example "Pat,50"
+    names = []
+    for line in leaderboard_file:
+        leader_name = ""
+        index = 0
 
-# countdown function
-def countdown():
-    global timer, timer_up
-    counter.clear()
-    if timer <= 0:
-        counter.write("Time's Up", font=font_setup)
-        timer_up = True
-    else:
-        counter.write("Timer: " + str(timer), font=font_setup)
-        timer -= 1
-        counter.getscreen().ontimer(countdown, counter_interval)
+        # TODO 1: use a while loop to read the leader name from the line (format is "leader_name,leader_score")
+        while (line[index] != ","):
+            leader_name = leader_name + line[index]
+            index = index + 1
+        # TODO 2: add the player name to the names list
+        names.append(leader_name)
+    leaderboard_file.close()
 
-    # update and display the score
-
-
-def update_score():
-    global score
-    score = score + 1
-    score_writer.clear()
-    score_writer.write(score, font=font_setup)
+    #  TODO 6: return the names list in place of the empty list
+    return names
 
 
-# what happens when the spot is clicked
-def spot_clicked(x, y):
-    global timer_up
-    if (not timer_up):
-        update_score()
-        change_position()
-    else:
-        spot.hideturtle()
+# return scores from the leaderboard file
+def get_scores(file_name):
+    leaderboard_file = open(file_name, "r")  # be sure you have created this
+
+    scores = []
+    for line in leaderboard_file:
+        leader_score = ""
+        index = 0
+
+        # TODO 3: use a while loop to index beyond the comma, skipping the player's name
+        while (line[index] != ","):
+            index += 1
+        index +=1
+        # TODO 4: use a while loop to get the score
+        while (line[index] != "\n"):
+            leader_score += line[index]
+            index += 1
+        # TODO 5: add the player score to the scores list
+        scores.append(leader_score)
+    leaderboard_file.close()
+
+    # TODO 7: return the scores in place of the empty list
+    return scores
 
 
-# resize the turtle
-def resize():
-    sizes = [.5, 1, 1.5, 2]
-    spot.shapesize(rand.choice(sizes))
+
+# update leaderboard by inserting the current player and score to the list at the correct position
+def update_leaderboard(file_name, leader_names, leader_scores, player_name, player_score):
+    index = 0
+    # TODO 8: loop through all the scores in the existing leaderboard list
+    '''
+    for   :
+      # TODO 9: check if this is the position to insert new score at
+      if ():
+        break
+      else:
+        index = index + 1
+    '''
+
+    # TODO 10: insert new player and score
+
+    # TODO 11: keep both lists at 5 elements only (top 5 players)
+
+    # TODO 12: store the latest leaderboard back in the file
+
+    '''
+    leaderboard_file = open(file_name, "w")  # this mode opens the file and erases its contents for a fresh start
+  
+    # TODO 13 loop through all the leaderboard elements and write them to the the file
+    for   :
+      leaderboard_file.write(leader_names[index] + "," + str(leader_scores[index]) + "\n")
+  
+    leaderboard_file.close()
+     '''
 
 
-# stamp turtle
-def leave_a_mark():
-    spot.fillcolor(rand.choice(colors[1:]))
-    spot.stamp()
-    spot.fillcolor(colors[0])  # comment out for more a more difficult game
+# draw leaderboard and display a message to player
+def draw_leaderboard(high_scorer, leader_names, leader_scores, turtle_object, player_score):
+    # clear the screen and move turtle object to (-200, 100) to start drawing the leaderboard
+    font_setup = ("Arial", 20, "normal")
+    turtle_object.clear()
+    turtle_object.penup()
+    turtle_object.goto(-160, 100)
+    turtle_object.hideturtle()
+    turtle_object.down()
 
+    # loop through the lists and use the same index to display the corresponding name and score, separated by a tab space '\t'
+    for index in range(len(leader_names)):
+        turtle_object.write(str(index + 1) + "\t" + leader_names[index] + "\t" + str(leader_scores[index]),
+                            font=font_setup)
+        turtle_object.penup()
+        turtle_object.goto(-160, int(turtle_object.ycor()) - 50)
+        turtle_object.down()
 
-# change the position of spot
-def change_position():
-    leave_a_mark()  # challenge to add color
-    resize()  # challenge to change size of turtle
-    new_xpos = rand.randint(-150, 150)  # x,y set to fit on smaller screen
-    new_ypos = rand.randint(-150, 150)  # x,y set to fit on smaller screen
-    spot.penup()  # 2nd step in moving
-    spot.hideturtle()  # 3rd step in moving
-    spot.goto(new_xpos, new_ypos)  # 1st step in moving
-    spot.showturtle()
-    spot.pendown()
+    # move turtle to a new line
+    turtle_object.penup()
+    turtle_object.goto(-160, int(turtle_object.ycor()) - 50)
+    turtle_object.pendown()
 
+    # TODO 14: display message about player making/not making leaderboard
+    '''
+      turtle_object.write("Congratulations!\nYou made the leaderboard!", font=font_setup)
+      turtle_object.write("Sorry!\nYou didn't make the leaderboard.\nMaybe next time!", font=font_setup)
+    '''
 
-# starting the game
-def start_game():
-    spot.onclick(spot_clicked)
-    counter.getscreen().ontimer(countdown, counter_interval)
+    # move turtle to a new line
+    turtle_object.penup()
+    turtle_object.goto(-160, int(turtle_object.ycor()) - 50)
+    turtle_object.pendown()
 
-
-# ----------events----------
-start_game()
-wn = trtl.Screen()
-wn.bgcolor("white smoke")
-wn.mainloop()
+    # TODO 15: Display a gold/silver/bronze message if player earned a gold/silver/or bronze medal; display nothing if no medal
+    '''
+      turtle_object.write("You earned a gold medal!", font=font_setup)
+      turtle_object.write("You earned a silver medal!", font=font_setup)
+      turtle_object.write("You earned a bronze medal!", font=font_setup)
+    '''
