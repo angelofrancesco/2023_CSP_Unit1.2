@@ -60,8 +60,9 @@ def get_scores(file_name):
 def update_leaderboard(file_name, leader_names, leader_scores, player_name, player_score):
     index = 0
     # TODO 8: loop through all the scores in the existing leaderboard list
-    '''
-    for   :
+    for leader_scores in range():
+
+
       # TODO 9: check if this is the position to insert new score at
       if ():
         break
@@ -75,6 +76,7 @@ def update_leaderboard(file_name, leader_names, leader_scores, player_name, play
 
     # TODO 12: store the latest leaderboard back in the file
 
+    '''
     '''
     leaderboard_file = open(file_name, "w")  # this mode opens the file and erases its contents for a fresh start
   
