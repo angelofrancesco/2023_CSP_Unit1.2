@@ -2,11 +2,11 @@
 import turtle as trtl
 
 #-----setup-----
-apple_image = "apple.gif" # Store the file name of your shape
+apple_image = "apple.gif"   # Store the file name of your shape
 
 wn = trtl.Screen()
 wn.setup(width=1.0, height=1.0)
-wn.addshape(apple_image) # Make the screen aware of the new file
+wn.addshape(apple_image)  # Make the screen aware of the new file
 wn.bgpic("background.gif")
 apple = trtl.Turtle()
 
@@ -16,12 +16,17 @@ apple = trtl.Turtle()
 def draw_apple(active_apple):
   active_apple.shape(apple_image)
   wn.update()
-  apple.xcor()
-  apple.ycor()
+
+def draw_a():
+  apple.penup()
+  apple.goto(0, -150)
+
+
 
 
 
 #-----function calls-----
-draw_apple(apple)
+
+wn.onkeypress(draw_a, "a")
 
 wn.mainloop()
