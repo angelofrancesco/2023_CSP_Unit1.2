@@ -1,54 +1,55 @@
-# Imports
 import turtle as trtl
-
-# Setup Turtles
-maze_painter = trtl.Turtle()
-wn = trtl.Screen()
-
-# Configuration Values
-wall_length = 20
-wall_increment = 20
+import random as rand
+# maze configuration variables
+num_sides = 25
+path_width = 15
 wall_color = "black"
-door_width = 15
 
-# Configure Turtles
-maze_painter.speed(0)
+# config maze
+maze_painter = trtl.Turtle()
+maze_painter.pensize(5)
 maze_painter.pencolor(wall_color)
-'''
-Psuedocode for drawing the basic spiral
-x = starting distance
-y = incremental distance
+maze_painter.speed("fastest")
 
-In a loop:
-    1. go forward x
-    2. turn left 90 degrees
-    3. go forward x + y
-    2. turn left 90 degrees
-'''
+def drawSpiral():
+    wall_len = path_width
+    for w in range(num_sides):
+        wall_len += path_width
 
-def draw_spiral():
-    global wall_length, wall_increment
+        if (w > 4):
+            randomNum = rand.randint(0, 1)
+            # Initial turn for painter to be in the correct direction
+            maze_painter.left(90)
+
+            if randomNum == 1:
+                # Draw the door
+                draw_door()
+                # Draw the barrier
+                draw_barrier()
+            else:
+                draw_barrier()
+                draw_door()
+
+            # Remember: you have to subtract the amount you drew for the wall and
+            # barrier to avoid making the walls bigger.
+            maze_painter.forward(wall_len - 10 - path_width - 40)
+
+def draw_door():
+    maze_painter.forward(10)
     maze_painter.penup()
-    maze_painter.goto(0,0)
+    maze_painter.forward(path_width * 2)
     maze_painter.pendown()
-    for wall in range (25):
-        maze_painter.left(90)
 
-        maze_painter.forward(wall_length + wall_increment)
-        wall_increment += 20
-    maze_painter.hideturtle()
+def draw_barrier():
+    # draw barrier wall
+    maze_painter.forward(40)
+    maze_painter.left(90)
+    maze_painter.forward(path_width * 2)
+    maze_painter.backward(path_width * 2)
+    maze_painter.right(90)
 
-# Draw door method
-def draw_doors():
-    for door in range (25):
-        maze_painter.forward(10)
-        maze_painter.penup()
-        maze_painter.forward(door_width * 2)
-        maze_painter.pendown()
+drawSpiral()
+maze_painter.hideturtle()
 
-
-
-draw_spiral()
-draw_doors()
-
+wn = trtl.Screen()
 wn.mainloop()
